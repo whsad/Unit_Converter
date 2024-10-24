@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+<div class="wrap">
+    <h1>Unit Converter</h1>
+
+    <div class="convert">
+        <ul>
+            <li><a th:href='@{/home?type=length}'>Length</a></li>
+            <li><a th:href='@{/home?type=weight}'>Weight</a></li>
+            <li style="width: 120px;"><a th:href='@{/home?type=temperature}'>Temperature</a></li>
+        </ul>
+    </div>
+
+    <div th:if='${view.equals("tab")}'>
+        <div class="info">
+            <form th:action="@{/convert}" method="post">
+                <input type="hidden" name="type" th:value="${type}"/>
+
+                <div>
+                    <p>Enter the value to convert</p>
+                    <input type="number" id="value" name="value" required>
+                </div>
+
+                <div class="custom-select">
+                    <p>Unit to convert from</p>
+                    <select id="sourceUnit" name="sourceUnit">
+                        <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                    </select>
+                </div>
+
+                <div class="custom-select">
+                    <p>Unit to convert to</p>
+                    <select id="destinationUnit" name="destinationUnit">
+                        <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit.name}"></option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="custom-button" type="submit">Convert</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="custom-reset" th:if='${view.equals("converted")}'>
+        <p>Result of your calculation</p>
+
+        <p style="font-weight: bold" th:text="|${previous} ${sourceUnit} = ${converted} ${destinationUnit}|"></p>
+
+        <div>
+            <button class="custom-button">
+                <a th:href='@{/home}'>Reset</a>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
